@@ -110,7 +110,7 @@ wire [31:0] e_imm = d_imm;
 wire [31:0] e_data_rs1 = r_data_rs1;
 wire [31:0] e_data_rs2 = r_data_rs2;
 
-wire e_A_sel            = (e_optype[J_jal] || e_optype[U_auipc] || e_optype[U_lui] || e_optype[B]); // reason we lost marks on pd4 -> || e_optype[I_jalr]); //0:Reg, 1:PC
+wire e_A_sel            = (e_optype[J_jal] || e_optype[U_auipc] || e_optype[U_lui] || e_optype[B]); //0:Reg, 1:PC
 wire e_B_sel            = !e_optype[R]; //0:Reg, 1:Imm
 
 wire [31:0] e_alu_res;
@@ -204,7 +204,7 @@ wire [31:0] m_data_mem =  (m_access_size == 2'd0) ? {{24{m_sign_extend}}, m_data
                           32'hx;
 
 wire [1:0]  m_wb_sel = (m_optype[U_auipc] || m_optype[U_lui] || m_optype[R] || m_optype[I_arith]) ? 2'h1 : (m_optype[I_loads] ? 2'h0 : 2'h2); //0:mem, 1:alu, 2:pc+4
-wire [31:0] m_data_rd = (m_wb_sel == 0) ? m_data_mem : ( (m_wb_sel == 1) ? m_alu_res : f_pc+4); //not sure which stage's pc to store for "f_pc+4"
+wire [31:0] m_data_rd = (m_wb_sel == 0) ? m_data_mem : ( (m_wb_sel == 1) ? m_alu_res : f_pc+4); 
 
 //WRITE BACK STAGE
 reg  [31:0] w_pc = m_pc;
