@@ -1,4 +1,4 @@
-module pd(
+module riscv_top(
   input clock,
   input reset
 );
