@@ -100,26 +100,26 @@ register_file register_file_0 (
 );
 
 //EXECUTE STAGE
-reg  [31:0] e_pc = d_pc;
-wire [9:0]  e_optype = d_optype;
-wire [2:0]  e_funct3 = d_funct3;
-wire [6:0]  e_funct7 = d_funct7;
-wire [4:0]  e_rd = d_rd;
-wire [4:0]  e_shamt = d_shamt;
-wire [31:0] e_imm = d_imm;
-wire [31:0] e_data_rs1 = r_data_rs1;
-wire [31:0] e_data_rs2 = r_data_rs2;
+reg  [31:0] e_pc        = d_pc;
+wire [9:0]  e_optype    = d_optype;
+wire [2:0]  e_funct3    = d_funct3;
+wire [6:0]  e_funct7    = d_funct7;
+wire [4:0]  e_rd        = d_rd;
+wire [4:0]  e_shamt     = d_shamt;
+wire [31:0] e_imm       = d_imm;
+wire [31:0] e_data_rs1  = r_data_rs1;
+wire [31:0] e_data_rs2  = r_data_rs2;
 
 wire e_A_sel            = (e_optype[J_jal] || e_optype[U_auipc] || e_optype[U_lui] || e_optype[B]); //0:Reg, 1:PC
 wire e_B_sel            = !e_optype[R]; //0:Reg, 1:Imm
 
 wire [31:0] e_alu_res;
-wire [31:0] e_data_A = e_A_sel ? e_pc  : e_data_rs1;
-wire [31:0] e_data_B = e_B_sel ? e_imm : e_data_rs2;
+wire [31:0] e_data_A    = e_A_sel ? e_pc  : e_data_rs1;
+wire [31:0] e_data_B    = e_B_sel ? e_imm : e_data_rs2;
 
-wire [3:0] e_alu_sel =  e_optype[U_auipc] ? 4'd11 :  //auipc
-                        e_optype[U_lui] ? 4'd10 :  //lui
-                        e_optype[R] ? (
+wire [3:0] e_alu_sel    = e_optype[U_auipc] ? 4'd11 :  //auipc
+                          e_optype[U_lui] ? 4'd10 :  //lui
+                          e_optype[R] ? (
                             (e_funct3 == 3'b000) ? (e_funct7 == 7'b0) ? 4'd0:4'd1 : //add:sub
                             (e_funct3 == 3'b100) ? 4'd2 :                         //xor
                             (e_funct3 == 3'b110) ? 4'd3 :                         //or
@@ -174,16 +174,16 @@ wire e_pc_sel = e_optype[J_jal] || e_optype[I_jalr] ||
 assign f_pc_sel = e_pc_sel;
 
 //MEMORY STAGE
-reg  [31:0] m_pc = e_pc;
-wire [9:0]  m_optype = e_optype;
-wire [2:0]  m_funct3 = e_funct3;
-wire [4:0]  m_rd = e_rd;
-wire [31:0] m_data_rs2 = e_data_rs2;
-wire [31:0] m_alu_res = e_alu_res;
+reg  [31:0] m_pc        = e_pc;
+wire [9:0]  m_optype    = e_optype;
+wire [2:0]  m_funct3    = e_funct3;
+wire [4:0]  m_rd        = e_rd;
+wire [31:0] m_data_rs2  = e_data_rs2;
+wire [31:0] m_alu_res   = e_alu_res;
 
 wire [31:0] m_data_out_dmem;
-wire        m_mem_rw = m_optype[S]; //0:read, 1:write
-wire        m_load_un = (m_optype[I_loads]) && ( (m_funct3 == 3'h4) || (m_funct3 == 3'h5)); //tells us if we are doing an unsigned lw, lh, lb
+wire        m_mem_rw           = m_optype[S]; //0:read, 1:write
+wire        m_load_un          = (m_optype[I_loads]) && ( (m_funct3 == 3'h4) || (m_funct3 == 3'h5)); //tells us if we are doing an unsigned lw, lh, lb
 wire [1:0]  m_access_size      = (e_optype[I_loads] || e_optype[S]) ? ( ((e_funct3 == 3'h0) || (e_funct3 == 3'h4)) ? 2'd0 :
                                                                         ((e_funct3 == 3'h1) || (e_funct3 == 3'h5)) ? 2'd1 :
                                                                         ((e_funct3 == 3'h2)) ? 2'd2 : 2'hx) : 2'hx;
@@ -197,13 +197,13 @@ dmemory dmemory_0 (
   .data_out     (m_data_out_dmem)
 );
 //sign extending data_mem appropriately
-wire m_sign_extend = (!m_load_un) ? ((m_access_size == 2'd0) ? (m_data_out_dmem[7]) : m_data_out_dmem[15]) : 1'b0; //to get msb
+wire m_sign_extend     = (~m_load_un) ? ((m_access_size == 2'd0) ? (m_data_out_dmem[7]) : m_data_out_dmem[15]) : 1'b0; //to get msb
 wire [31:0] m_data_mem =  (m_access_size == 2'd0) ? {{24{m_sign_extend}}, m_data_out_dmem[7:0]} :    //byte
                           (m_access_size == 2'd1) ? { {16{m_sign_extend}}, m_data_out_dmem[15:0]} :  //half
                           (m_access_size == 2'd2) ? m_data_out_dmem :                              //word
                           32'hx;
 
-wire [1:0]  m_wb_sel = (m_optype[U_auipc] || m_optype[U_lui] || m_optype[R] || m_optype[I_arith]) ? 2'h1 : (m_optype[I_loads] ? 2'h0 : 2'h2); //0:mem, 1:alu, 2:pc+4
+wire [1:0]  m_wb_sel  = (m_optype[U_auipc] || m_optype[U_lui] || m_optype[R] || m_optype[I_arith]) ? 2'h1 : (m_optype[I_loads] ? 2'h0 : 2'h2); //0:mem, 1:alu, 2:pc+4
 wire [31:0] m_data_rd = (m_wb_sel == 0) ? m_data_mem : ( (m_wb_sel == 1) ? m_alu_res : f_pc+4); 
 
 //WRITE BACK STAGE
@@ -214,7 +214,7 @@ wire [31:0] w_data_rd = m_data_rd;
 wire        w_write_enable = !(w_optype[S] || w_optype[B]);
 
 assign r_write_enable = w_write_enable;
-assign r_rd = w_rd;
-assign r_data_rd = w_data_rd; //write back to register file
+assign r_rd           = w_rd;
+assign r_data_rd      = w_data_rd; //write back to register file
 
 endmodule

@@ -1,4 +1,4 @@
-module pd(
+module riscv_top(
   input clock,
   input reset
 );
@@ -257,14 +257,14 @@ dmemory dmemory_0 (
   .data_out     (m_data_out_dmem)
 );
 //sign extending data_mem appropriately
-wire m_sign_extend = (m_load_un) ? 1'b0 : ((m_access_size == 2'd0) ? (m_data_out_dmem[7]) : m_data_out_dmem[15]); //to get msb
+wire m_sign_extend     = (m_load_un) ? 1'b0 : ((m_access_size == 2'd0) ? (m_data_out_dmem[7]) : m_data_out_dmem[15]); //to get msb
 wire [31:0] m_data_mem =  (m_optype == 10'b0)      ? 32'b0 :                                         //nop
                           (m_access_size == 2'd0) ? {{24{m_sign_extend}}, m_data_out_dmem[7:0]} :    //byte
                           (m_access_size == 2'd1) ? { {16{m_sign_extend}}, m_data_out_dmem[15:0]} :  //half
                           (m_access_size == 2'd2) ? m_data_out_dmem :                                //word
                           32'hx;
 
-wire [1:0]  m_wb_sel = (m_optype[U_auipc] || m_optype[U_lui] || m_optype[R] || m_optype[I_arith]) ? 2'h1 : (m_optype[I_loads] ? 2'h0 : 2'h2); //0:mem, 1:alu, 2:pc+4
+wire [1:0]  m_wb_sel  = (m_optype[U_auipc] || m_optype[U_lui] || m_optype[R] || m_optype[I_arith]) ? 2'h1 : (m_optype[I_loads] ? 2'h0 : 2'h2); //0:mem, 1:alu, 2:pc+4
 wire [31:0] m_data_rd = (m_optype == 10'b0) ? 32'b0 : ((m_wb_sel == 0) ? m_data_mem : ( (m_wb_sel == 1) ? m_alu_res : m_pc+4));
 
 //WRITE BACK STAGE
@@ -282,7 +282,7 @@ end
 
 wire   w_write_enable = !(w_optype[S] || w_optype[B] || (w_optype == 10'b0));
 assign r_write_enable = w_write_enable;
-assign r_rd = w_rd;
-assign r_data_rd = w_data_rd; //write back to register file
+assign r_rd           = w_rd;
+assign r_data_rd      = w_data_rd; //write back to register file
 
 endmodule

@@ -42,7 +42,7 @@ end
 
 //COMBINATIONAL LOGIC FOR READ OPERATION (load)
 assign data_out = (!read_write) ? {mem[address+3], mem[address+2], mem[address+1], mem[address]} : 32'hx;
-//outputting full 32 bits of the line we want, sign extending in pd.v
+//outputting full 32 bits of the line we want, sign extending in top.v
 
 
 endmodule

@@ -1,1 +1,2 @@
 # Five-Stage-Pipelined-RISC-V-Processor
+Fully functioning five stage pipelined RISC-V processor with full bypassing/forwarding written from scratch using Verilog. Functionality was verified in simulation as well as in hardware through deployment on a Xilinx PYNQ FPGA board.
