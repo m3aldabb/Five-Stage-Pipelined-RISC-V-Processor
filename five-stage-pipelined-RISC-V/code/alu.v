@@ -1,4 +1,4 @@
-module alu(
+module alu (
     input      [31:0] data_A,
     input      [31:0] data_B,
     input      [4:0]  shamt,
@@ -13,15 +13,14 @@ assign alu_out =    (alu_sel == 4'd0 ) ? $signed(data_A) + $signed(data_B) :    
                     (alu_sel == 4'd3 ) ? data_A | data_B :                              //or, ori
                     (alu_sel == 4'd4 ) ? data_A & data_B :                              //and, andi
 
-                    //not sure if we should still %32 with data_B when it is provided from regfile
                     (alu_sel == 4'd5 ) ? (B_sel ? $signed($signed(data_A) << $signed({27'b0, shamt})) : $signed($signed(data_A) << ($signed(data_B[4:0])))) :   //slli : sll
-                    (alu_sel == 4'd6 ) ? (B_sel ? ($signed(data_A) >> $signed({27'b0, shamt})) : ($signed(data_A) >> $signed(data_B[4:0]))) :   //srli : srl
-                    (alu_sel == 4'd7 ) ? (B_sel ? $signed($signed(data_A) >>> $signed({27'b0, shamt})) : $signed($signed(data_A) >>> $signed(data_B[4:0]))) : //srai : sra
+                    (alu_sel == 4'd6 ) ? (B_sel ? ($signed(data_A) >> $signed({27'b0, shamt})) : ($signed(data_A) >> $signed(data_B[4:0]))) :                   //srli : srl
+                    (alu_sel == 4'd7 ) ? (B_sel ? $signed($signed(data_A) >>> $signed({27'b0, shamt})) : $signed($signed(data_A) >>> $signed(data_B[4:0]))) :   //srai : sra
 
                     (alu_sel == 4'd8 ) ? (($signed(data_A) < $signed(data_B)) ? 1:0) :  //slt, slti
                     (alu_sel == 4'd9 ) ? ((data_A < data_B) ? 1:0) :                    //sltu, sltiu
-                    (alu_sel == 4'd10) ? data_B:                                //lui
-                    (alu_sel == 4'd11) ? data_A + $signed(data_B):             //auipc
+                    (alu_sel == 4'd10) ? data_B:                                        //lui
+                    (alu_sel == 4'd11) ? data_A + $signed(data_B):                      //auipc
                     {32{1'bz}};
 
 endmodule
