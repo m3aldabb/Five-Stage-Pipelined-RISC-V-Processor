@@ -5,7 +5,7 @@ Fully functioning five stage pipelined RISC-V processor with full bypassing/forw
 
 ### RISC-V ISA
 
-### Simulation Waveform
+### Simulation Waveforms
 
 ### Tools
 
