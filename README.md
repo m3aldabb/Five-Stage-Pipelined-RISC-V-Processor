@@ -19,7 +19,7 @@ In this project I buit a 5-stage pipelined processor using synthesizable SystemV
 ### Diagram of the Control Path Architecture
 ![image](https://github.com/m3aldabb/riscv-processor/assets/103402348/10042084-91a2-4c5f-b90e-fcca6a6ea578)
 
-### Diagram Outlining the Five Pipeline Stage(IF, ID, EX, MEM, WB)
+### Diagram Outlining the Five Pipeline Stages (IF, ID, EX, MEM, WB)
 ![image](https://github.com/m3aldabb/riscv-processor/assets/103402348/d5b98fe9-f50f-495d-9840-11ee10ccd781)
 
 ## Tools
