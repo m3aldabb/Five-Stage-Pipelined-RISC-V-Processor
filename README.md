@@ -17,10 +17,11 @@ RISC-V provides several instruction formats, including:
 In this project I buit a 5-stage pipelined processor using synthesizable SystemVerilog code. The processor implements the RISC-V ISA. I have provided diagrams below of the architecture which shows how the control logic works in the CPU as well as the various pipeline stages.
 
 ### Diagram of the Control Path Architecture
-![image](https://github.com/m3aldabb/riscv-processor/assets/103402348/10042084-91a2-4c5f-b90e-fcca6a6ea578)
+![image](https://github.com/m3aldabb/riscv-processor/assets/103402348/55175325-ddf7-4229-8b69-ece6a0476568)
 
 ### Diagram Outlining the Five Pipeline Stages (IF, ID, EX, MEM, WB)
-![image](https://github.com/m3aldabb/riscv-processor/assets/103402348/d5b98fe9-f50f-495d-9840-11ee10ccd781)
+![image](https://github.com/m3aldabb/riscv-processor/assets/103402348/9e608dce-64fb-4297-9c2f-f42b40bf45b5)
+
 
 ## Tools
 * <a href="https://github.com/steveicarus/iverilog"> iVerilog </a> is a free and powerful Verilog simulator that I always use to test my RTL designs.
