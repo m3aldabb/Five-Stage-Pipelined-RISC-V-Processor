@@ -8,7 +8,7 @@ module dmemory (
 );
 
 localparam    START_ADDR  = 32'h01000000;
-localparam    LINE_COUNT  = 58;
+localparam    LINE_COUNT  = 357;
 localparam    MEM_DEPTH   = START_ADDR + 4*LINE_COUNT;
 
 logic [7:0]   mem  [MEM_DEPTH-1:0];
@@ -16,7 +16,7 @@ logic [31:0]  temp [LINE_COUNT-1:0];
 
 //INITIALIZING DMEM TO .x         
 initial begin
-  $readmemh("../../data/fibonacci.x", temp, 0, LINE_COUNT-1);
+  $readmemh("../../data/add.x", temp, 0, LINE_COUNT-1);
 
   for (int i=0; i<LINE_COUNT; i++) begin
     {

@@ -3,7 +3,6 @@ module riscv_top(
   input rst
 );
 
-// localparam START_ADDR = 32'h01000000;
 localparam START_ADDR = 32'h01000000;
 //OPTYPES
 localparam R       = 0;
