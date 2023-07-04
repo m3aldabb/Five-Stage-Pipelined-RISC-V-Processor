@@ -10,12 +10,10 @@ module register_file (
 );
 logic [31:0] mem [31:0];
 
-localparam START_ADDR = 32'h0;
-localparam MEM_DEPTH  = 32;
-
 initial begin
-    mem[0] = 32'h0;
-    mem[2] = MEM_DEPTH + START_ADDR;
+    for(int i = 0; i < 32; i++) begin
+        mem[i]  = i;
+    end
 end
 
 always @(posedge clk) begin

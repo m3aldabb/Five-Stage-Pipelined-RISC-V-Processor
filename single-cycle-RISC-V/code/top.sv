@@ -2,12 +2,12 @@ module riscv_top(
   input clk,
   input rst
 );
-localparam START_ADDR = 32'h0;
+localparam START_ADDR = 32'h01000000;
 
 //FETCH STAGE
 logic   [31:0]  f_pc;
 logic   [31:0]  f_insn;
-logic [31:0] f_data_in;
+logic   [31:0]  f_data_in;
 logic           f_pc_sel;
 
 always @(posedge clk) begin

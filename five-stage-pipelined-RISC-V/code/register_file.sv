@@ -13,8 +13,9 @@ localparam MEM_DEPTH  = 1048576;
 logic [31:0] mem [31:0];
 
 initial begin
-    mem[0] = 32'b0;
-    mem[2] = MEM_DEPTH + START_ADDR;
+    for(int i = 0; i < 32; i++) begin
+        mem[i] = i;
+    end
 end
 
 always @(posedge clk) begin

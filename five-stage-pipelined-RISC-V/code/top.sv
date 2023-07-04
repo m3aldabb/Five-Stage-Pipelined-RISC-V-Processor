@@ -4,7 +4,7 @@ module riscv_top(
 );
 
 // localparam START_ADDR = 32'h01000000;
-localparam START_ADDR = 32'h0;
+localparam START_ADDR = 32'h01000000;
 //OPTYPES
 localparam R       = 0;
 localparam I_loads = 1;

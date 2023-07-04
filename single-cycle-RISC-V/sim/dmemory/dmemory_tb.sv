@@ -25,9 +25,7 @@ always #5 clk = ~clk;
         clk = 1'b0;
         #10;
 
-        address = START_ADDR; read_write = 1; access_size = 2'd2; data_in = 32'd21972; #10;
-        $display("in=%h out=%h  read_write=%b   access_size=%b",data_in, data_out, read_write, access_size);
-        address = START_ADDR; read_write = 0; access_size = 2'd0; data_in = 32'd21972; #50;
+        address = START_ADDR; read_write = 0; access_size = 2'd2; data_in = 32'd21972; #10;
         $display("in=%h out=%h  read_write=%b   access_size=%b",data_in, data_out, read_write, access_size);
 
         $finish;
